@@ -104,7 +104,8 @@ let rsync_dirs ?args ?exclude_vcdirs url dst =
   if not (is_remote url) &&
      not (OpamFilename.exists_dir (OpamFilename.Dir.of_string src_s))
   then
-    Done (Not_available (None, Printf.sprintf "Directory %s does not exist" src_s))
+    let msg = Printf.sprintf "Directory %s does not exist" src_s in
+    Done (Not_available (Some msg, msg))
   else
   rsync ?args ?exclude_vcdirs src_s dst_s @@| function
   | Not_available _ as na -> na
@@ -168,6 +169,9 @@ module B = struct
          else
            OpamFilename.mkdir quarantine;
          pull_dir_quiet quarantine url) @@+ function
+    | Not_available (Some err, _) ->
+      finalise ();
+      Done (OpamRepositoryBackend.Update_err (Failure err))
     | Not_available _ ->
       finalise ();
       Done (OpamRepositoryBackend.Update_err (Failure "rsync failed"))

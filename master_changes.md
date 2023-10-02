@@ -56,7 +56,7 @@ users)
 
 ## Repository
   * Fix `OPAMCURL` and `OPAMFETCH` handling [#5607 @rjbou - fix #5597]
-  * Improve error message when `opam repo add` fails because local src directory doesn't exist [fix #5632]
+  * Improve error message when `opam repo add` fails because local src directory doesn't exist [#5689 @punchagan - fix #5632]
 
 ## Lock
 
